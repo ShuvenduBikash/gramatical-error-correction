@@ -67,7 +67,7 @@ def train(input_batch, len_inputs, target_batch, encoder, decoder, encoder_optim
     # TODO parameter를 paddingsequence로 받게끔 하고 아래는 삭제
     length_targets = Variable(torch.LongTensor(list(map(lambda s: len(s), target_batch))))
     if Config.use_cuda:
-        length_targets = len_targets.cuda()
+        length_targets = length_targets.cuda()
 
     # Run words through encoder
     encoder_hidden = encoder.init_hidden(batch_size)
