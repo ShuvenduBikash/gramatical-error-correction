@@ -46,8 +46,8 @@ class WordDict:
 class Corpus:
     def __init__(self, dict, max_length, path):
         self.max_length = max_length
-        self.lines = self.filter_raw_string(open(path).read()).split('\n')
-        self.pairs = [[s for s in l.split('\t')] for l in self.lines]
+        self.lines = self.filter_raw_string(open(path).read()).split('\n')  # list of sentences
+        self.pairs = [[s for s in l.split('\t')] for l in self.lines]  # pairs of correct and incorrect sentences
         self.dict = dict
         for pair in self.pairs:
             self.dict.add_indexes(pair[0])
@@ -56,7 +56,7 @@ class Corpus:
     def filter_raw_string(self, str):
         return str.strip().translate({None: '<>'})
 
-    def next_batch(self, batch_size=100):
+    def next_batch(self, batch_size=64):
         pairs = np.array(random.sample(self.pairs, batch_size))
         input_lens = [self.dict.sentence_to_indexes(s, self.max_length) for s in pairs[:, 0]]
         target_lens = [self.dict.sentence_to_indexes(s, self.max_length) for s in pairs[:, 1]]
